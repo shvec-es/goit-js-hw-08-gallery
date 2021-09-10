@@ -19,6 +19,7 @@ function createGalleryItems(gallery) {
 }
 
 const galleryMarkup = createGalleryItems(galleryItems);
+
 const galleryContainer = document.querySelector('.js-gallery');
 
 galleryContainer.insertAdjacentHTML('afterbegin', galleryMarkup);
@@ -32,7 +33,6 @@ function onGalleryContainerClick(ev) {
     }
 
     const modalOpenEl = ev.target.dataset.source;
-    // console.log(modalOpenEl);
     getModalOpenOnClick(modalOpenEl);
 }
 
@@ -41,30 +41,27 @@ const lightboxImg = document.querySelector('.lightbox__image');
 
 function getModalOpenOnClick(elem) {
     lightboxDiv.classList.add('is-open');
-
-    console.log(lightboxImg.src);
-
-    if (lightboxImg.src === "http://127.0.0.1:5500/index.html") {
-        lightboxImg.src = elem;
-        console.log(lightboxImg.src);
-    } else {
-        lightboxImg.src = "''";
-        console.log(lightboxImg.src);
-    }
+    lightboxImg.setAttribute('src', elem);
 }
 
-// const currentActiveImg = document.querySelector('.lightbox.is-open');
-// console.log(currentActiveImg);
 const modalCloseBtn = document.querySelector('button[data-action="close-lightbox"]');
 
 modalCloseBtn.addEventListener('click', onCloseModalWindow);
+lightboxDiv.addEventListener('click', (ev) => {
+    if (ev.target.classList.contains('lightbox__overlay')) {
+        onCloseModalWindow()
+    }
+});
+
+window.addEventListener('keydown', (ev) => {
+    if (ev.code === 'Escape') {
+        onCloseModalWindow()
+    }
+})
 
 function onCloseModalWindow() {
     lightboxDiv.classList.remove('is-open');
-    // lightboxImg.setAttribute('src', "http://127.0.0.1:5500/index.html");
-    // lightboxImg.src = "'";
-
-    // lightboxImg.removeAttribute('src');
+    lightboxImg.src = "";
 }
 
 
